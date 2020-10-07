@@ -1,5 +1,9 @@
 services:
   - docker
+env:
+  global:
+    - GIT_SHA=$(git rev-parse HEAD)
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 before_install:
   - openssl aes-256-cbc -K $encrypted_a7f613d112d1_key -iv $encrypted_a7f613d112d1_iv -in k8s-gcp-291816-95fd924a9f03.json.enc -out ./k8s-gcp-291816-95fd924a9f03.json -d
   - curl https://sdk.cloud.google.com | bash > /dev/null;
@@ -9,3 +13,14 @@ before_install:
   - gcloud config set project k8s-gcp-291816
   - gcloud config set compute/zone europe-west2-c
   - gcloud container clusters get-credentials k8s-gcp-cluster1
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t roblobob/05-k8s-gcp-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true roblobob/05-k8s-gcp-test npm test
+
+deploy:
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: master

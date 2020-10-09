@@ -11,7 +11,6 @@ spec:
       name: letsencrypt-staging-key
     # Add a single challenge solver, HTTP01 using nginx
     solvers:
-      - selector: {}
-        http01:
+      - http01:
           ingress:
             class: nginx

@@ -1,21 +1,13 @@
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: letsencrypt-prod
+  name: gcp-edmunds-me
   namespace: cert-manager
 spec:
-  secretName: gcp-edmunds-me
-  issuerRef:
-    name: letsencrypt-prod
-    kind: ClusterIssuer
-  commonName: gcp.edmunds.me
+  secretName: gcp-edmunds-me-tls
   dnsNames:
     - gcp.edmunds.me
     - www.gcp.edmunds.me
-  acme:
-    config:
-      - http01:
-          ingressClass: nginx
-        domains:
-          - gcp.edmunds.me
-          - www.gcp.edmunds.me
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer

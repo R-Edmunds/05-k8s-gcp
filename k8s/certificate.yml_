@@ -8,6 +8,7 @@ spec:
   dnsNames:
     - gcp.edmunds.me
     - www.gcp.edmunds.me
+  commonName: gcp.edmunds.me
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
